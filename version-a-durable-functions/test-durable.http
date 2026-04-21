@@ -1,0 +1,119 @@
+### ======================================================
+### VERSION A - DURABLE FUNCTIONS TEST REQUESTS
+### Base URL: http://localhost:7072
+### ======================================================
+
+
+### Scenario 1: Valid expense under $100 -> Auto-approved
+POST http://localhost:7072/api/expense/start
+Content-Type: application/json
+
+{
+  "employee_name": "Arpit Patel",
+  "employee_email": "arpit@example.com",
+  "amount": 75,
+  "category": "travel",
+  "description": "Taxi fare to client meeting",
+  "manager_email": "manager@example.com"
+}
+
+
+### ------------------------------------------------------
+### Scenario 2: Valid expense >= $100 -> Start workflow
+### Then copy the returned instanceId and use it below
+### ------------------------------------------------------
+POST http://localhost:7072/api/expense/start
+Content-Type: application/json
+
+{
+  "employee_name": "Arpit Patel",
+  "employee_email": "arpit@example.com",
+  "amount": 250,
+  "category": "equipment",
+  "description": "External monitor purchase",
+  "manager_email": "manager@example.com"
+}
+
+
+### Scenario 2A: Manager approves
+### Replace YOUR_INSTANCE_ID with the real instanceId from Scenario 2
+POST http://localhost:7072/api/manager/respond/88467bd0090d4462a1d81bdb2685f642
+Content-Type: application/json
+
+{
+  "decision": "approved",
+  "managerComment": "Approved by manager"
+}
+
+
+### ------------------------------------------------------
+### Scenario 3: Valid expense >= $100 -> Start workflow
+### Then copy the returned instanceId and use it below
+### ------------------------------------------------------
+POST http://localhost:7072/api/expense/start
+Content-Type: application/json
+
+{
+  "employee_name": "Arpit Patel",
+  "employee_email": "arpit@example.com",
+  "amount": 300,
+  "category": "software",
+  "description": "Software subscription",
+  "manager_email": "manager@example.com"
+}
+
+
+### Scenario 3A: Manager rejects
+### Replace YOUR_INSTANCE_ID with the real instanceId from Scenario 3
+POST http://localhost:7072/api/manager/respond/243455d7b33e4766bcee0de4528041c4
+Content-Type: application/json
+
+{
+  "decision": "rejected",
+  "managerComment": "Rejected by manager"
+}
+
+
+### ------------------------------------------------------
+### Scenario 4: Valid expense >= $100 -> No manager response
+### Start the workflow and do NOT call the manager endpoint
+### Wait about 60 seconds for escalated timeout result
+### ------------------------------------------------------
+POST http://localhost:7072/api/expense/start
+Content-Type: application/json
+
+{
+  "employee_name": "Arpit Patel",
+  "employee_email": "arpit@example.com",
+  "amount": 400,
+  "category": "supplies",
+  "description": "Bulk office supplies",
+  "manager_email": "manager@example.com"
+}
+
+
+### Scenario 5: Missing required fields -> Validation error
+POST http://localhost:7072/api/expense/start
+Content-Type: application/json
+
+{
+  "employee_name": "Arpit Patel",
+  "employee_email": "arpit@example.com",
+  "amount": 80,
+  "category": "travel",
+  "description": ""
+}
+
+
+### Scenario 6: Invalid category -> Validation error
+POST http://localhost:7072/api/expense/start
+Content-Type: application/json
+
+{
+  "employee_name": "Arpit Patel",
+  "employee_email": "arpit@example.com",
+  "amount": 150,
+  "category": "gaming",
+  "description": "Gaming chair",
+  "manager_email": "manager@example.com"
+}
