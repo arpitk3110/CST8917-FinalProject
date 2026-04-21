@@ -1,0 +1,39 @@
+### Test validation function - valid request
+POST http://localhost:7073/api/validate-expense
+Content-Type: application/json
+
+{
+  "employee_name": "Arpit Patel",
+  "employee_email": "arpit@example.com",
+  "amount": 75,
+  "category": "travel",
+  "description": "Taxi fare to client meeting",
+  "manager_email": "manager@example.com"
+}
+
+
+### Test validation function - missing fields
+POST http://localhost:7073/api/validate-expense
+Content-Type: application/json
+
+{
+  "employee_name": "Arpit Patel",
+  "employee_email": "arpit@example.com",
+  "amount": 80,
+  "category": "travel",
+  "description": ""
+}
+
+
+### Test validation function - invalid category
+POST http://localhost:7073/api/validate-expense
+Content-Type: application/json
+
+{
+  "employee_name": "Arpit Patel",
+  "employee_email": "arpit@example.com",
+  "amount": 150,
+  "category": "gaming",
+  "description": "Gaming chair",
+  "manager_email": "manager@example.com"
+}
